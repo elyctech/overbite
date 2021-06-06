@@ -4,9 +4,11 @@ use winit::{
   window::{WindowBuilder},
 };
 
+use crate::rendering_engine::vulkan;
+
 pub struct Window {
   event_loop: winit::event_loop::EventLoop<()>,
-  _window: winit::window::Window,
+  window: winit::window::Window,
 }
 
 impl Window {
@@ -23,14 +25,15 @@ impl Window {
 
     Window {
       event_loop,
-      _window: window
+      window,
     }
   }
 
   // Methods
 
-  pub fn open(self) {
+  pub fn run(self, application: vulkan::Application) {
     self.event_loop.run(move |event, _, control_flow| {
+      let _application = &application;
       *control_flow = ControlFlow::Wait;
 
       match event {
