@@ -1,3 +1,6 @@
+use overbite::window::Window;
+
 fn main() {
-    println!("Hello, world!");
+    let window = Window::new("Overbite", 800, 600, false);
+    window.open();
 }
