@@ -14,23 +14,23 @@ impl Instance {
   // Associated functions
 
   pub fn new(
-    create_info: &vk::InstanceCreateInfo,
+    create_info: vk::InstanceCreateInfo,
     entry: &ash::Entry,
   ) -> Instance {
     let instance = unsafe {
       entry
-        .create_instance(create_info, None)
+        .create_instance(&create_info, None)
         .expect("failed to create Vulkan instance")
     };
 
     Instance {
-      instance
+      instance,
     }
   }
 
   // Methods
 
-  fn instance(&self) -> &ash::Instance {
+  pub fn instance(&self) -> &ash::Instance {
     &self.instance
   }
 }
