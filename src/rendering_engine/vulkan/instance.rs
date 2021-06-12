@@ -7,7 +7,7 @@ use ash::{
 };
 
 pub struct Instance {
-  instance: ash::Instance,
+  raw: ash::Instance,
 }
 
 impl Instance {
@@ -17,28 +17,28 @@ impl Instance {
     create_info: vk::InstanceCreateInfo,
     entry: &ash::Entry,
   ) -> Instance {
-    let instance = unsafe {
+    let raw = unsafe {
       entry
         .create_instance(&create_info, None)
         .expect("failed to create Vulkan instance")
     };
 
     Instance {
-      instance,
+      raw,
     }
   }
 
   // Methods
 
-  pub fn instance(&self) -> &ash::Instance {
-    &self.instance
+  pub fn raw(&self) -> &ash::Instance {
+    &self.raw
   }
 }
 
 impl Drop for Instance {
   fn drop(&mut self) {
     unsafe {
-      self.instance.destroy_instance(None);
+      self.raw.destroy_instance(None);
     }
   }
 }

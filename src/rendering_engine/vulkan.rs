@@ -2,7 +2,6 @@ mod application;
 mod debug_utils_messenger;
 mod instance;
 mod platform_base;
-mod platform_windows;
 
 pub mod application_info;
 pub mod debug_utils_messenger_create_info;
@@ -15,5 +14,18 @@ pub use instance::Instance;
 
 // Platform-specific
 
+// Windows
+
+#[cfg(target_os = "windows")]
+mod platform_windows;
+
 #[cfg(target_os = "windows")]
 pub use platform_windows::extensions;
+
+// Unix
+
+#[cfg(all(unix, not(target_os = "android"), not(target_os = "macos")))]
+mod platform_unix;
+
+#[cfg(all(unix, not(target_os = "android"), not(target_os = "macos")))]
+pub use platform_unix::extensions;

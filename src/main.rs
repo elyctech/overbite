@@ -66,7 +66,7 @@ fn main() {
 			vulkan::DebugUtilsMessenger::new(
 				application_debug_create_info,
 				&entry,
-				&instance.instance()
+				&instance
 			)
 		);
 	}

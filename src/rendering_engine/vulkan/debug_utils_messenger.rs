@@ -3,6 +3,8 @@ use ash::{
   vk,
 };
 
+use crate::rendering_engine::vulkan;
+
 pub struct DebugUtilsMessenger {
   debug_utils: DebugUtils,
   debug_utils_messenger: vk::DebugUtilsMessengerEXT
@@ -14,9 +16,9 @@ impl DebugUtilsMessenger {
   pub fn new(
     create_info: vk::DebugUtilsMessengerCreateInfoEXT,
     entry: &ash::Entry,
-    instance: &ash::Instance,
+    instance: &vulkan::Instance,
   ) -> DebugUtilsMessenger {
-    let debug_utils = DebugUtils::new(entry, instance);
+    let debug_utils = DebugUtils::new(entry, instance.raw());
     let debug_utils_messenger = unsafe {
       debug_utils
         .create_debug_utils_messenger(&create_info, None)
