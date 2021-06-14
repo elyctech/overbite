@@ -1,6 +1,7 @@
 mod application;
 mod debug_utils_messenger;
 mod instance;
+mod physical_device;
 mod platform_base;
 
 pub mod application_info;
@@ -11,6 +12,7 @@ pub mod validation_layers;
 pub use application::Application;
 pub use debug_utils_messenger::DebugUtilsMessenger;
 pub use instance::Instance;
+pub use physical_device::PhysicalDevice;
 
 // Platform-specific
 

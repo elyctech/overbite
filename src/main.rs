@@ -66,15 +66,23 @@ fn main() {
 			vulkan::DebugUtilsMessenger::new(
 				application_debug_create_info,
 				&entry,
-				&instance
+				&instance,
 			)
 		);
 	}
+
+	// Overbite vulkan physical device
+	let physical_device = vulkan::PhysicalDevice::pick(
+		&instance,
+		|_| true,
+	)
+		.expect("failed to find suitable physical device!");
 
 	// Overbite vulkan application
 	let application = vulkan::Application::new(
 		debug_utils_messenger,
 		instance,
+		physical_device,
 	);
 
 	// Window
