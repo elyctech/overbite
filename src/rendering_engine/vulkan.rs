@@ -3,6 +3,7 @@ mod debug_utils_messenger;
 mod instance;
 mod physical_device;
 mod platform_base;
+mod queue_family_set;
 
 pub mod application_info;
 pub mod debug_utils_messenger_create_info;
@@ -13,6 +14,7 @@ pub use application::Application;
 pub use debug_utils_messenger::DebugUtilsMessenger;
 pub use instance::Instance;
 pub use physical_device::PhysicalDevice;
+pub use queue_family_set::QueueFamilySet;
 
 // Platform-specific
 

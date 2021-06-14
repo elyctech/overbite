@@ -20,7 +20,7 @@ impl PhysicalDevice {
                 .expect("failed to enumerate physical devices!")
         };
 
-        for physical_device in physical_devices {
+        for &physical_device in physical_devices.iter() {
             if selector(&physical_device) {
                 return Some(PhysicalDevice {
                     raw: physical_device,
@@ -28,6 +28,12 @@ impl PhysicalDevice {
             }
         }
 
-        return None;
+        None
+    }
+
+    // Methods
+
+    pub fn raw(&self) -> &ash::vk::PhysicalDevice {
+        &self.raw
     }
 }

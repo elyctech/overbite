@@ -55,11 +55,21 @@ fn main() {
     }
 
     // Overbite vulkan physical device
-    let physical_device = vulkan::PhysicalDevice::pick(&instance, |_| true)
-        .expect("failed to find suitable physical device!");
+    let physical_device = vulkan::PhysicalDevice::pick(&instance, |physical_device| {
+        vulkan::QueueFamilySet::find_with_raw_device(&instance, physical_device).is_complete()
+    })
+    .expect("failed to find suitable physical device!");
+
+    // Selected queue families
+    let queue_families = vulkan::QueueFamilySet::find(&instance, &physical_device);
 
     // Overbite vulkan application
-    let application = vulkan::Application::new(debug_utils_messenger, instance, physical_device);
+    let application = vulkan::Application::new(
+        debug_utils_messenger,
+        instance,
+        physical_device,
+        queue_families,
+    );
 
     // Window
     let window = Window::new("Overbite", 800, 600, false);
