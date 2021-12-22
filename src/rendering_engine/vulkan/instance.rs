@@ -10,10 +10,10 @@ pub struct Instance {
 impl Instance {
     // Associated functions
 
-    pub fn new(create_info: vk::InstanceCreateInfo, entry: &ash::Entry) -> Instance {
+    pub fn new(create_info: &vk::InstanceCreateInfo, entry: &ash::Entry) -> Instance {
         let raw = unsafe {
             entry
-                .create_instance(&create_info, None)
+                .create_instance(create_info, None)
                 .expect("failed to create Vulkan instance")
         };
 

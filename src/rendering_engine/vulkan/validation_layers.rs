@@ -55,16 +55,20 @@ pub fn check_validation_layer_support(entry: &ash::Entry) -> bool {
 
 // Desired validation layers
 
+// TODO Options
 pub struct ValidationLayers {
+    // Held so it is not freed prematurely
     _enabled_layer_c_strings: Vec<CString>,
     enabled_layer_names: Vec<*const c_char>,
 }
 
 impl ValidationLayers {
+    // TODO If Option is None, return 0. Otherwise, return unwrapped length
     pub fn count(&self) -> u32 {
         self.enabled_layer_names.len() as u32
     }
 
+    // TODO If Option is None, return ptr::null(). Otherwise, return unwrapped as_ptr()
     pub fn names(&self) -> *const *const i8 {
         self.enabled_layer_names.as_ptr()
     }

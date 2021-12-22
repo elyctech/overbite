@@ -8,7 +8,7 @@ use crate::rendering_engine::vulkan;
 
 pub struct Window {
     event_loop: winit::event_loop::EventLoop<()>,
-    window: winit::window::Window,
+    _window: winit::window::Window,
 }
 
 impl Window {
@@ -16,14 +16,17 @@ impl Window {
 
     pub fn new(title: &str, width: u32, height: u32, resizeable: bool) -> Window {
         let event_loop = winit::event_loop::EventLoop::new();
-        let window = WindowBuilder::new()
+        let _window = WindowBuilder::new()
             .with_inner_size(winit::dpi::LogicalSize::new(width, height))
             .with_resizable(resizeable)
             .with_title(title)
             .build(&event_loop)
             .expect("failed to create window!");
 
-        Window { event_loop, window }
+        Window {
+            event_loop,
+            _window,
+        }
     }
 
     // Methods

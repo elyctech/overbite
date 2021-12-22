@@ -39,7 +39,7 @@ fn main() {
     }
 
     // Overbite vulkan instance
-    let instance = vulkan::Instance::new(instance_create_info, &entry);
+    let instance = vulkan::Instance::new(&instance_create_info, &entry);
 
     // Application debugging
     let mut debug_utils_messenger: Option<vulkan::DebugUtilsMessenger> = None;
@@ -55,19 +55,42 @@ fn main() {
     }
 
     // Overbite vulkan physical device
-    let physical_device = vulkan::PhysicalDevice::pick(&instance, |physical_device| {
-        vulkan::QueueFamilySet::find_with_raw_device(&instance, physical_device).is_complete()
+    let physical_device = vulkan::PhysicalDevice::pick(&instance, |raw_physical_device| {
+        vulkan::QueueFamilySet::find_with_raw_device(&instance, raw_physical_device).is_complete()
     })
     .expect("failed to find suitable physical device!");
 
     // Selected queue families
     let queue_families = vulkan::QueueFamilySet::find(&instance, &physical_device);
 
+    if !queue_families.is_complete() {
+        panic!("failed to find complete queue family set!");
+    }
+
+    // Device queue create info
+    let device_queue_create_info = vulkan::device_queue_create_info::make(&queue_families);
+
+    // Device features
+    let physical_device_features = vulkan::physical_device_features::make();
+
+    // Device create info
+    let device_create_info = vulkan::device_create_info::make(
+        &device_queue_create_info,
+        &physical_device_features,
+        &validation_layers,
+    );
+
+    // Overbite vulkan logical device
+    let logical_device =
+        vulkan::LogicalDevice::new(&physical_device, &device_create_info, &instance);
+
     // Overbite vulkan application
     let application = vulkan::Application::new(
         debug_utils_messenger,
         instance,
+        logical_device,
         physical_device,
+        // TODO This might not be necessary
         queue_families,
     );
 

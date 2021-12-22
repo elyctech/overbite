@@ -56,6 +56,10 @@ impl QueueFamilySet {
 
     // Methods
 
+    pub fn get_graphics_family(&self) -> &Option<u32> {
+        &self.graphics_family
+    }
+
     pub fn is_complete(&self) -> bool {
         self.graphics_family.is_some()
     }

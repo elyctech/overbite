@@ -1,18 +1,23 @@
 mod application;
 mod debug_utils_messenger;
 mod instance;
+mod logical_device;
 mod physical_device;
 mod platform_base;
 mod queue_family_set;
 
 pub mod application_info;
 pub mod debug_utils_messenger_create_info;
+pub mod device_create_info;
+pub mod device_queue_create_info;
 pub mod instance_create_info;
+pub mod physical_device_features;
 pub mod validation_layers;
 
 pub use application::Application;
 pub use debug_utils_messenger::DebugUtilsMessenger;
 pub use instance::Instance;
+pub use logical_device::LogicalDevice;
 pub use physical_device::PhysicalDevice;
 pub use queue_family_set::QueueFamilySet;
 
