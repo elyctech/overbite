@@ -1,28 +1,14 @@
 use ash::version::EntryV1_0;
 
-use std::{
-    ffi::{CStr, CString},
-    os::raw::c_char,
-};
+use std::{ffi::CString, os::raw::c_char};
+
+use crate::rendering_engine::vulkan::utility;
 
 #[cfg(debug_assertions)]
 pub const ENABLE_VALIDATION_LAYERS: bool = true;
 
 #[cfg(not(debug_assertions))]
 pub const ENABLE_VALIDATION_LAYERS: bool = false;
-
-// String conversion helper
-fn c_chars_to_string(c_char_string: &[c_char]) -> String {
-    let raw_string = unsafe {
-        let pointer = c_char_string.as_ptr();
-        CStr::from_ptr(pointer)
-    };
-
-    raw_string
-        .to_str()
-        .expect("failed to convert C string!")
-        .to_owned()
-}
 
 // Desired validation layers
 const DESIRED_VALIDATION_LAYERS: [&str; 1] = ["VK_LAYER_KHRONOS_validation"];
@@ -37,7 +23,7 @@ pub fn check_validation_layer_support(entry: &ash::Entry) -> bool {
         let mut layer_found = false;
 
         for layer_property in available_layers.iter() {
-            let layer_property_name = c_chars_to_string(&layer_property.layer_name);
+            let layer_property_name = utility::c_chars_to_string(&layer_property.layer_name);
 
             if (*layer_name) == layer_property_name {
                 layer_found = true;

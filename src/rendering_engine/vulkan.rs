@@ -10,9 +10,11 @@ mod surface;
 pub mod application_info;
 pub mod debug_utils_messenger_create_info;
 pub mod device_create_info;
+pub mod device_extensions;
 pub mod device_queue_create_info;
 pub mod instance_create_info;
 pub mod physical_device_features;
+pub mod utility;
 pub mod validation_layers;
 
 pub use application::Application;
