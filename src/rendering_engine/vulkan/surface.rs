@@ -22,6 +22,16 @@ impl Surface {
 
     Surface { loader, raw }
   }
+
+  // Methods
+
+  pub fn loader(&self) -> &VkSurface {
+    &self.loader
+  }
+
+  pub fn raw(&self) -> &vk::SurfaceKHR {
+    &self.raw
+  }
 }
 
 impl Drop for Surface {

@@ -55,7 +55,7 @@ pub fn check_validation_layer_support(entry: &ash::Entry) -> bool {
 
 // Desired validation layers
 
-// TODO Options
+// TODO Options instead of empty vectors
 pub struct ValidationLayers {
     // Held so it is not freed prematurely
     _enabled_layer_c_strings: Vec<CString>,

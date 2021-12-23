@@ -1,5 +1,6 @@
 use ash::vk;
 
+use std::collections::HashSet;
 use std::ffi::c_void;
 
 use overbite::rendering_engine::vulkan;
@@ -54,28 +55,49 @@ fn main() {
         ));
     }
 
+    // Window
+    let window = Window::new("Overbite", 800, 600, false);
+
+    // Surface
+    let surface = vulkan::Surface::new(&entry, &instance, &window);
+
     // Overbite vulkan physical device
     let physical_device = vulkan::PhysicalDevice::pick(&instance, |raw_physical_device| {
-        vulkan::QueueFamilySet::find_with_raw_device(&instance, raw_physical_device).is_complete()
+        vulkan::QueueFamilySet::find_with_raw_device(&instance, raw_physical_device, &surface)
+            .is_complete()
     })
     .expect("failed to find suitable physical device!");
 
     // Selected queue families
-    let queue_families = vulkan::QueueFamilySet::find(&instance, &physical_device);
+    let queue_families = vulkan::QueueFamilySet::find(&instance, &physical_device, &surface);
 
     if !queue_families.is_complete() {
         panic!("failed to find complete queue family set!");
     }
 
-    // Device queue create info
-    let device_queue_create_info = vulkan::device_queue_create_info::make(&queue_families);
+    // Device queue create infos
+
+    let mut unique_queue_families = HashSet::new();
+    unique_queue_families.insert(queue_families.graphics_family().unwrap());
+    unique_queue_families.insert(queue_families.present_family().unwrap());
+
+    let queue_priorities = [1.0_f32];
+
+    let mut device_queue_create_infos = vec![];
+
+    for &queue_family in unique_queue_families.iter() {
+        device_queue_create_infos.push(vulkan::device_queue_create_info::make(
+            queue_family,
+            &queue_priorities,
+        ));
+    }
 
     // Device features
     let physical_device_features = vulkan::physical_device_features::make();
 
     // Device create info
     let device_create_info = vulkan::device_create_info::make(
-        &device_queue_create_info,
+        &device_queue_create_infos,
         &physical_device_features,
         &validation_layers,
     );
@@ -85,13 +107,10 @@ fn main() {
         vulkan::LogicalDevice::new(&physical_device, &device_create_info, &instance);
 
     // Graphics queue
-    let graphics_queue = logical_device.get_queue(queue_families.get_graphics_family().unwrap(), 0);
+    let graphics_queue = logical_device.get_queue(queue_families.graphics_family().unwrap(), 0);
 
-    // Window
-    let window = Window::new("Overbite", 800, 600, false);
-
-    // Surface
-    let surface = vulkan::Surface::new(&entry, &instance, &window);
+    // Present queue
+    let present_queue = logical_device.get_queue(queue_families.present_family().unwrap(), 0);
 
     // Overbite vulkan application
     let application = vulkan::Application::new(
@@ -105,5 +124,6 @@ fn main() {
         surface,
     );
 
+    // Run it!
     window.run(application);
 }
