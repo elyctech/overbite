@@ -5,6 +5,7 @@ mod logical_device;
 mod physical_device;
 mod platform_base;
 mod queue_family_set;
+mod surface;
 
 pub mod application_info;
 pub mod debug_utils_messenger_create_info;
@@ -20,6 +21,7 @@ pub use instance::Instance;
 pub use logical_device::LogicalDevice;
 pub use physical_device::PhysicalDevice;
 pub use queue_family_set::QueueFamilySet;
+pub use surface::Surface;
 
 // Platform-specific
 

@@ -19,13 +19,17 @@ impl LogicalDevice {
             instance
                 .raw()
                 .create_device(*physical_device.raw(), create_info, None)
-                .expect("failed to create Vulkan instance")
+                .expect("failed to create Vulkan logical device!")
         };
 
         LogicalDevice { raw }
     }
 
     // Methods
+
+    pub fn get_queue(&self, queue_family: u32, index: u32) -> vk::Queue {
+        unsafe { self.raw.get_device_queue(queue_family, index) }
+    }
 
     pub fn raw(&self) -> &ash::Device {
         &self.raw

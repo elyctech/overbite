@@ -14,7 +14,7 @@ impl Instance {
         let raw = unsafe {
             entry
                 .create_instance(create_info, None)
-                .expect("failed to create Vulkan instance")
+                .expect("failed to create Vulkan instance!")
         };
 
         Instance { raw }

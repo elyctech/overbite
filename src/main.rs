@@ -84,18 +84,26 @@ fn main() {
     let logical_device =
         vulkan::LogicalDevice::new(&physical_device, &device_create_info, &instance);
 
+    // Graphics queue
+    let graphics_queue = logical_device.get_queue(queue_families.get_graphics_family().unwrap(), 0);
+
+    // Window
+    let window = Window::new("Overbite", 800, 600, false);
+
+    // Surface
+    let surface = vulkan::Surface::new(&entry, &instance, &window);
+
     // Overbite vulkan application
     let application = vulkan::Application::new(
         debug_utils_messenger,
         instance,
         logical_device,
+        // TODO Does this need saved?
         physical_device,
-        // TODO This might not be necessary
+        // TODO Does this need saved?
         queue_families,
+        surface,
     );
-
-    // Window
-    let window = Window::new("Overbite", 800, 600, false);
 
     window.run(application);
 }
